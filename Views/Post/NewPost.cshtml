@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Create Post";
+}
+@model Post
+<div>
+    <h1>Artstagram</h1>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/posts/new">Add a Post</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <hr>
+    <div>
+        <h1>Make a post</h1>
+        <form asp-action="CreatePost" asp-controller="Post" method="post">
+            <div>
+                <label asp-for="ImageURL">Image (URL Format Please)</label>
+                <input asp-for="ImageURL">
+                <span asp-validation-for="ImageURL"></span>
+            </div>
+            <div>
+                <label asp-for="Title">Title</label>
+                <input asp-for="Title">
+                <span asp-validation-for="Title"></span>
+            </div>
+            <div>
+                <label asp-for="Medium">Medium</label>
+                <input asp-for="Medium">
+                <span asp-validation-for="Medium"></span>
+            </div>
+            <div>
+                <label asp-for="ForSale">For Sale?</label>
+                <input asp-for="ForSale" type="checkbox">
+            </div>
+            <input type="submit" class="btn btn-primary">
+        </form>
+    </div>
+</div>

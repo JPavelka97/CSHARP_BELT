@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Read Post";
+}
+@model Post
+
+<div>
+    <h1>Artstagram</h1>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/posts/new">Add a Post</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <hr>
+    <div>
+        <h1>@Model.Title</h1>
+        <div>
+            <img src="@Model.ImageURL" class="h-50 w-50">
+            <div>
+                <p>By: @Model.CreatorName</p>
+                <p>Medium: @Model.Medium</p>
+                @if(@Model.ForSale == false)
+                {
+                    <p>Not for sale!</p>
+                }
+                else
+                {
+                    <p>For Sale!</p>
+                }
+                <p>Number of Likes: @Model.Likes.Count()</p>
+                @if(Context.Session.GetInt32("UserId") == @Model.CreatorId)
+                {
+                <div class="d-flex justify-content-center gap-2 align-items-center">
+                    <a href="/posts/@Model.PostId/edit" class="btn btn-primary">Edit</a>
+                    <form asp-action="DestroyPost" asp-controller="Post" method=post asp-route-id="@Model.PostId">
+                        <input type="submit" value="Delete">
+                    </form>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

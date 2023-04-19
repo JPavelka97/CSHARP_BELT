@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Artstagram!</h1>
+    <div class="d-flex justify-content-around">
+        <div>
+            @await Html.PartialAsync("_Register")
+        </div>
+        <div>
+            @await Html.PartialAsync("_Login")
+        </div>
+    </div>
+</div>

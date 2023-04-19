@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@model List<Post>
+
+<div class="text-center">
+    <h1>Artstagram</h1>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/posts/new">Add a Post</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <hr>
+    <div class="d-flex">
+        @{
+            int? SessionUserId = Context.Session.GetInt32("UserId");
+
+            foreach(Post p in Model)
+            {
+                DateTime since = @p.CreatedAt;
+                TimeSpan sincePost = DateTime.Now.Subtract(since);
+                <div class="w-25">
+                    <img src="@p.ImageURL" class="w-25 h-25">
+                    <p><span><a href="/posts/@p.PostId">@p.Title</a></span></p>
+                    <p>Posted By: @p.CreatorName</p>
+                    <p>Medium: @p.Medium</p>
+                    @if(sincePost.Days > 0)
+                    {
+                        <p>Posted @sincePost.Days Days ago</p>
+                    }
+                    else if(sincePost.Hours > 0)
+                    {
+                        <p>Posted @sincePost.Hours Hours ago</p>
+                    }
+                    else if(sincePost.Minutes > 0)
+                    {
+                        <p>Posted @sincePost.Minutes Minutes ago</p>
+                    }
+                    else
+                    {
+                        <p>Post @sincePost.Seconds Seconds ago</p>
+                    }
+                    @if(@p.ForSale == false)
+                    {
+                        <p>Not for sale!</p>
+                    }
+                    else
+                    {
+                        <p>For Sale!</p>
+                    }
+                    <p>Likes: @p.Likes.Count()</p>
+                    @if(SessionUserId == p.CreatorId)
+                    {
+                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                        <a href="/posts/@p.PostId/edit" class="btn btn-primary">Edit</a>
+                        <form asp-action="DestroyPost" asp-controller="Post" method="post" asp-route-id="@p.PostId">
+                            <input type="submit" value="Delete">
+                        </form>
+                        </div>
+                    }
+                    else
+                    {
+                        if(p.Likes.Any(l => l.UserId == SessionUserId) == true)
+                        {
+                            <form asp-action="RemoveLike" asp-controller="Post" method="post" asp-route-like_id="@p.PostId">
+                                <input type="submit" value="Remove Like">
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="AddLike" asp-controller="Post" method="post" asp-route-like_id="@p.PostId">
+                                <input type="submit" value="Add Like">
+                            </form>
+                        }
+                    }
+                </div>
+            }
+        }
+
+    </div>
+</div>
